@@ -21,7 +21,9 @@ module.exports = async (req, res) => {
     return res.status(400).json({ status: 'error', result: 'Missing url parameter', time_taken: formatDuration(handlerStart) });
   }
 
-  if (!url.startsWith('https://work.ink')) {
+  let parsedUrl = null;
+  try { parsedUrl = new URL(url); } catch {}
+  if (!parsedUrl || parsedUrl.protocol !== 'https:') {
     return res.status(400).json({ status: 'error', result: 'invalid workink', time_taken: formatDuration(handlerStart) });
   }
 
@@ -32,7 +34,7 @@ module.exports = async (req, res) => {
 
   let hostname = '';
   try {
-    hostname = new URL(url).hostname.toLowerCase();
+    hostname = parsedUrl ? parsedUrl.hostname.toLowerCase() : new URL(url).hostname.toLowerCase();
   } catch {
     const m = url.match(/https?:\/\/([^\/?#]+)/i);
     hostname = m ? m[1].toLowerCase() : '';
@@ -40,6 +42,21 @@ module.exports = async (req, res) => {
 
   if (!hostname) {
     return res.status(400).json({ status: 'error', result: 'Invalid URL', time_taken: formatDuration(handlerStart) });
+  }
+
+  const allowedVoltar = [
+    'work.ink',
+    'pandadevelopment.net',
+    'auth.plato',
+    'keyrblx.com',
+    'airflowscript.com',
+    'shrinkme.click',
+    'linkvertise.com'
+  ];
+
+  const isAllowed = allowedVoltar.some(d => hostname === d || hostname.endsWith('.' + d));
+  if (!isAllowed) {
+    return res.status(400).json({ status: 'error', result: 'invalid workink', time_taken: formatDuration(handlerStart) });
   }
 
   const voltarBase = 'http://77.110.121.76:3000';
