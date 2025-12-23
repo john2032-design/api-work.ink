@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
 
   const isAllowed = allowedVoltar.some(d => hostname === d || hostname.endsWith('.' + d));
   if (!isAllowed) {
-    return res.status(400).json({ status: 'error', result: 'invalid workink', time_taken: formatDuration(handlerStart) });
+    return res.status(400).json({ status: 'error', result: 'invalid link', time_taken: formatDuration(handlerStart) });
   }
 
   const voltarBase = 'http://77.110.121.76:3000';
