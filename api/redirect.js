@@ -17,7 +17,7 @@ export default function handler(req, res) {
   }
   let result = decodedTo;
   if (/^https?:\/\/ads\.luarmor\.net\//i.test(decodedTo)) {
-    result = 'http://camper.pythonanywhere.com/redirect?to=' + encodeURIComponent(decodedTo);
+    result = 'https://api-luarmor-net-vortixworld.vercel.app/redirect?to=' + encodeURIComponent(decodedTo);
   }
   if (!/^https?:\/\/ads\.luarmor\.net\//i.test(decodedTo)) {
     res.setHeader('Location', result);
