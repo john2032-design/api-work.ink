@@ -1,6 +1,10 @@
 // api/redirect.js
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default async function handler(req, res) {
   try {
@@ -44,11 +48,15 @@ export default async function handler(req, res) {
       res.status(302).setHeader('Location', result).end();
       return;
     }
+
     const targetB64 = Buffer.from(result, 'utf8').toString('base64url');
+
+    // ==================== FIXED & BULLETPROOF PATH RESOLUTION ====================
     const candidates = [
+      path.join(__dirname, 'pages', 'redirectDelay.html'),
       path.resolve(process.cwd(), 'api', 'pages', 'redirectDelay.html'),
-      path.resolve(process.cwd(), 'pages', 'redirectDelay.html'),
-      path.resolve(__dirname, 'pages', 'redirectDelay.html')
+      path.resolve(__dirname, 'pages', 'redirectDelay.html'),
+      path.resolve(process.cwd(), 'pages', 'redirectDelay.html')
     ];
     let html = null;
     for (const p of candidates) {
@@ -63,6 +71,8 @@ export default async function handler(req, res) {
       res.status(500).send('redirectDelay.html template not found (looked in ' + candidates.join(', ') + ')');
       return;
     }
+    // ===========================================================================
+
     html = html.replace(/%TARGET_B64%/g, targetB64);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
