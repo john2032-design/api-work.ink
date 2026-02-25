@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/redirect', (req, res) => {
+router.get('/luarmor', (req, res) => {
   const redirectMap = req.app.locals.redirectMap;
   console.log(`[${new Date().toISOString()}] GET /redirect request received with query:`, req.query);
   
