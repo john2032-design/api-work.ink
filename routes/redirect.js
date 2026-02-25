@@ -158,7 +158,7 @@ body {
     }
 
     if (/^https?:\/\/ads\.luarmor\.net\//i.test(result)) {
-      result = 'https://api-luarmor-vw.onrender.com/redirect?verify=' + result;
+      result = 'https://api-luarmor-vw.onrender.com/luarmor?verify=' + result;
     }
 
     if (!/^https?:\/\/ads\.luarmor\.net\//i.test(storedTo)) {
