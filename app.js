@@ -17,7 +17,6 @@ app.use(createRouter);
 app.use(redirectRouter);
 
 app.head('/', (req, res) => {
-  console.log(`[${new Date().toISOString()}] HEAD health check received`);
   res.status(200).end();
 });
 
@@ -26,10 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use((req, res) => {
-  console.log(`[${new Date().toISOString()}] Invalid method ${req.method} at ${req.path}`);
   res.status(405).send('Method Not Allowed');
 });
 
-app.listen(port, () => {
-  console.log(`[${new Date().toISOString()}] Server running on port ${port}`);
-});
+app.listen(port, function() {});
